@@ -85,6 +85,20 @@
 #define GFU_INST_IMM_SET(Inst, Val)    (((Inst) & ~0x0000FFFF) | GFU_INST_IMM_ENC(Val))
 #define GFU_INST_ADDR_SET(Inst, Val)   (((Inst) & ~0x03FFFFFF) | GFU_INST_ADDR_ENC(Val))
 
+typedef union gfu_inst {
+    struct{
+        uint8_t funct  : 6;
+        uint8_t shamt  : 5;
+        uint8_t rd     : 5;
+        uint8_t rt     : 5;
+        uint8_t rs     : 5;
+        uint8_t opcode : 6;
+    };
+    uint16_t imm  : 16;
+    uint32_t addr : 26;
+    uint32_t raw  : 32;
+} gfu_inst;
+
 /// Primary opcode field.
 typedef enum gfu_opcode {
     GFU_OPCODE_SPECIAL = 0x00,
