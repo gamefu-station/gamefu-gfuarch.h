@@ -432,7 +432,7 @@ GFUARCH_INLINE uint32_t gfu_inst_add(gfu_register rd, gfu_register rs, gfu_regis
            GFU_INST_RD_ENC(rd) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_ADD);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_ADD);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_addi(gfu_register rt, gfu_register rs, int32_t imm) {
@@ -454,35 +454,35 @@ GFUARCH_INLINE uint32_t gfu_inst_addu(gfu_register rd, gfu_register rs, gfu_regi
            GFU_INST_RD_ENC(rd) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_ADDU);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_ADDU);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_div(gfu_register rs, gfu_register rt) {
     return GFU_INST_OPCODE_ENC(GFU_OPCODE_SPECIAL) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_DIV);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_DIV);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_divu(gfu_register rs, gfu_register rt) {
     return GFU_INST_OPCODE_ENC(GFU_OPCODE_SPECIAL) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_DIVU);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_DIVU);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_mult(gfu_register rs, gfu_register rt) {
     return GFU_INST_OPCODE_ENC(GFU_OPCODE_SPECIAL) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_MULT);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_MULT);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_multu(gfu_register rs, gfu_register rt) {
     return GFU_INST_OPCODE_ENC(GFU_OPCODE_SPECIAL) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_MULTU);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_MULTU);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_sub(gfu_register rd, gfu_register rs, gfu_register rt) {
@@ -490,7 +490,7 @@ GFUARCH_INLINE uint32_t gfu_inst_sub(gfu_register rd, gfu_register rs, gfu_regis
            GFU_INST_RD_ENC(rd) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_SUB);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_SUB);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_subu(gfu_register rd, gfu_register rs, gfu_register rt) {
@@ -498,7 +498,7 @@ GFUARCH_INLINE uint32_t gfu_inst_subu(gfu_register rd, gfu_register rs, gfu_regi
            GFU_INST_RD_ENC(rd) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_SUBU);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_SUBU);
 }
 
 /// ======================================================================= ///
@@ -510,7 +510,7 @@ GFUARCH_INLINE uint32_t gfu_inst_and(gfu_register rd, gfu_register rs, gfu_regis
            GFU_INST_RD_ENC(rd) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_AND);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_AND);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_andi(gfu_register rt, gfu_register rs, int32_t imm) {
@@ -525,7 +525,7 @@ GFUARCH_INLINE uint32_t gfu_inst_nor(gfu_register rd, gfu_register rs, gfu_regis
            GFU_INST_RD_ENC(rd) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_NOR);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_NOR);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_or(gfu_register rd, gfu_register rs, gfu_register rt) {
@@ -533,7 +533,7 @@ GFUARCH_INLINE uint32_t gfu_inst_or(gfu_register rd, gfu_register rs, gfu_regist
            GFU_INST_RD_ENC(rd) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_OR);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_OR);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_ori(gfu_register rt, gfu_register rs, int32_t imm) {
@@ -548,7 +548,7 @@ GFUARCH_INLINE uint32_t gfu_inst_xor(gfu_register rd, gfu_register rs, gfu_regis
            GFU_INST_RD_ENC(rd) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_XOR);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_XOR);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_xori(gfu_register rt, gfu_register rs, int32_t imm) {
@@ -567,7 +567,7 @@ GFUARCH_INLINE uint32_t gfu_inst_movn(gfu_register rd, gfu_register rs, gfu_regi
            GFU_INST_RD_ENC(rd) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_MOVN);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_MOVN);
 }
 
 GFUARCH_INLINE uint32_t gfu_inst_movz(gfu_register rd, gfu_register rs, gfu_register rt) {
@@ -575,7 +575,7 @@ GFUARCH_INLINE uint32_t gfu_inst_movz(gfu_register rd, gfu_register rs, gfu_regi
            GFU_INST_RD_ENC(rd) |
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
-           GFU_INST_FUNC_ENC(GFU_FUNC_MOVZ);
+           GFU_INST_FUNCT_ENC(GFU_FUNCT_MOVZ);
 }
 
 #endif /* GFUARCH_IMPLEMENTATION */
