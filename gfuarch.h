@@ -371,6 +371,9 @@ GFUARCH_INLINE uint32_t gfu_inst_subu(gfu_register rd, gfu_register rs, gfu_regi
 /// CPU Branch and Jump Instructions.                                       ///
 /// ======================================================================= ///
 
+GFUARCH_INLINE uint32_t gfu_inst_b(int32_t offset);
+GFUARCH_INLINE uint32_t gfu_inst_beq(gfu_register rt, gfu_register rs, int32_t offset);
+
 /// ======================================================================= ///
 /// CPU Instruction Control Instructions.                                   ///
 /// ======================================================================= ///
@@ -513,6 +516,21 @@ GFUARCH_INLINE uint32_t gfu_inst_subu(gfu_register rd, gfu_register rs, gfu_regi
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
            GFU_INST_FUNCT_ENC(GFU_FUNCT_SUBU);
+}
+
+/// ======================================================================= ///
+/// CPU Branch and Jump Instructions.                                       ///
+/// ======================================================================= ///
+
+GFUARCH_INLINE uint32_t gfu_inst_b(int32_t offset) {
+    return gfu_inst_beq(GFU_REG_R0, GFU_REG_R0, offset);
+}
+
+GFUARCH_INLINE uint32_t gfu_inst_beq(gfu_register rt, gfu_register rs, int32_t offset) {
+    return GFU_INST_OPCODE_ENC(GFU_OPCODE_BEQ) |
+           GFU_INST_RS_ENC(rs) |
+           GFU_INST_RT_ENC(rt) |
+           GFU_INST_IMM_ENC(offset);
 }
 
 /// ======================================================================= ///
