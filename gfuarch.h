@@ -378,6 +378,8 @@ GFUARCH_INLINE uint32_t gfu_inst_beq(gfu_register rt, gfu_register rs, int32_t o
 /// CPU Instruction Control Instructions.                                   ///
 /// ======================================================================= ///
 
+GFUARCH_INLINE uint32_t gfu_inst_nop();
+
 /// ======================================================================= ///
 /// CPU Load, Store and Memory Control Instructions.                        ///
 /// ======================================================================= ///
@@ -531,6 +533,14 @@ GFUARCH_INLINE uint32_t gfu_inst_beq(gfu_register rt, gfu_register rs, int32_t o
            GFU_INST_RS_ENC(rs) |
            GFU_INST_RT_ENC(rt) |
            GFU_INST_IMM_ENC(offset);
+}
+
+/// ======================================================================= ///
+/// CPU Instruction Control Instructions.                                   ///
+/// ======================================================================= ///
+
+GFUARCH_INLINE uint32_t gfu_inst_nop() {
+    return 0;
 }
 
 /// ======================================================================= ///
