@@ -562,6 +562,12 @@ GFUARCH_INLINE uint32_t gfu_inst_andi(gfu_register rt, gfu_register rs, int32_t 
            GFU_INST_IMM_ENC(imm);
 }
 
+GFUARCH_INLINE uint32_t gfu_inst_lui(gfu_register rt, int32_t immediate) {
+    return GFU_INST_OPCODE_ENC(GFU_OPCODE_LUI) |
+           GFU_INST_RT_ENC(rt) |
+           GFU_INST_IMM_ENC(imm);
+}
+
 GFUARCH_INLINE uint32_t gfu_inst_nor(gfu_register rd, gfu_register rs, gfu_register rt) {
     return GFU_INST_OPCODE_ENC(GFU_OPCODE_SPECIAL) |
            GFU_INST_RD_ENC(rd) |
