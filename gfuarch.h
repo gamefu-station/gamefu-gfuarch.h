@@ -71,6 +71,7 @@
 #define GFU_ENC_FUNCT(Val)   (((Val) & 0x0000003F) <<  0)
 #define GFU_ENC_IMM(Val)     (((Val) & 0x0000FFFF) <<  0)
 #define GFU_ENC_ADDR(Val)    (((Val) & 0x03FFFFFF) <<  0)
+#define GFU_ENC_CODE(Val)    (((Val) & 0x000FFFFF) <<  6)
 
 typedef union gfu_inst {
     struct {
@@ -80,6 +81,11 @@ typedef union gfu_inst {
         uint32_t rt     : 5;
         uint32_t rs     : 5;
         uint32_t opcode : 6;
+    };
+    struct {
+        uint32_t _code_padding1 : 6;
+        uint32_t code : 20;
+        uint32_t _code_padding2 : 6;
     };
     uint32_t imm  : 16;
     uint32_t addr : 26;
@@ -356,43 +362,44 @@ typedef enum gfu_register {
 /// ======================================================================= ///
 
 #define GFU_INST_B(Offset) (GFU_INST_BEQ(GFU_REG_R0, GFU_REG_R0, (Offset)))
-#define GFU_INST_BAL(Offset)
+#define GFU_INST_BAL(Offset) (GFU_INST_BGEZAL(GFU_REG_R0, (Offset)))
 #define GFU_INST_BEQ(Rt, Rs, Offset) (GFU_ENC_OPCODE(GFU_OPCODE_BEQ) | GFU_ENC_RS(Rs) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
-#define GFU_INST_BGEZ
-#define GFU_INST_GBEZAL
-#define GFU_INST_BGTZ
-#define GFU_INST_BLEZ
-#define GFU_INST_BLTZAL
-#define GFU_INST_BNE
-#define GFU_INST_J
-#define GFU_INST_JAL
-#define GFU_INST_JALR
-#define GFU_INST_JR
+#define GFU_INST_BGEZ(Rs, Offset) (GFU_ENC_OPCODE(GFU_OPCODE_REGIMM) | GFU_ENC_RS(Rs) | GFU_ENC_RT(GFU_RIRT_BGEZ) | GFU_ENC_IMM(Offset))
+#define GFU_INST_BGEZAL(Rs, Offset) (GFU_ENC_OPCODE(GFU_OPCODE_REGIMM) | GFU_ENC_RS(Rs) | GFU_ENC_RT(GFU_RIRT_BGEZAL) | GFU_ENC_IMM(Offset))
+#define GFU_INST_BGTZ(Rs, Offset) (GFU_ENC_OPCODE(GFU_OPCODE_BGTZ) | GFU_ENC_RS(Rs) | GFU_ENC_IMM(Offset))
+#define GFU_INST_BLEZ(Rs, Offset) (GFU_ENC_OPCODE(GFU_OPCODE_BLEZ) | GFU_ENC_RS(Rs) | GFU_ENC_IMM(Offset))
+#define GFU_INST_BLTZ(Rs, Offset) (GFU_ENC_OPCODE(GFU_OPCODE_REGIMM) | GFU_ENC_RS(Rs) | GFU_ENC_RT(GFU_RIRT_BLTZ) | GFU_ENC_IMM(Offset))
+#define GFU_INST_BLTZAL(Rs, Offset) (GFU_ENC_OPCODE(GFU_OPCODE_REGIMM) | GFU_ENC_RS(Rs) | GFU_ENC_RT(GFU_RIRT_BLTZAL) | GFU_ENC_IMM(Offset))
+#define GFU_INST_BNE(Rs, Rt, Offset) (GFU_ENC_OPCODE(GFU_OPCODE_BNE) | GFU_ENC_RS(Rs) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_J(Addr) (GFU_ENC_OPCODE(GFU_OPCODE_J) | GFU_ENC_ADDR(Addr))
+#define GFU_INST_JAL(Addr) (GFU_ENC_OPCODE(GFU_OPCODE_JAL) | GFU_ENC_ADDR(Addr))
+#define GFU_INST_JALR(Rd, Rs) (GFU_ENC_OPCODE(GFU_OPCODE_SPECIAL) | GFU_ENC_RD(Rd) | GFU_ENC_RS(Rs) | GFU_ENC_FUNCT(GFU_FUNCT_JALR))
+#define GFU_INST_JR(Rs) (GFU_ENC_OPCODE(GFU_OPCODE_SPECIAL) | GFU_ENC_RS(Rs) | GFU_ENC_FUNCT(GFU_FUNCT_JR))
 
 /// ======================================================================= ///
 /// CPU Instruction Control Instructions.                                   ///
 /// ======================================================================= ///
 
 #define GFU_INST_NOP() (0)
-#define GFU_INST_SSNOP
+#define GFU_INST_SSNOP() (0x40)
 
 /// ======================================================================= ///
 /// CPU Load, Store and Memory Control Instructions.                        ///
 /// ======================================================================= ///
 
-#define GFU_INST_LB
-#define GFU_INST_LBU
-#define GFU_INST_LH
-#define GFU_INST_LHU
-#define GFU_INST_LL
-#define GFU_INST_LW
-#define GFU_INST_LWL
-#define GFU_INST_LWR
-#define GFU_INST_PREF
-#define GFU_INST_SB
-#define GFU_INST_SC
+#define GFU_INST_LB(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_LB) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_LBU(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_LBU) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_LH(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_LH) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_LHU(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_LHU) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_LL(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_LL) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_LW(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_LW) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_LWL(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_LWL) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_LWR(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_LWR) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_PREF(Hint, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_PREF) | GFU_ENC_RS(Base) | GFU_ENC_RT(Hint) | GFU_ENC_IMM(Offset))
+#define GFU_INST_SB(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_SB) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_SC(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_SC) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
 #define GFU_INST_SD
-#define GFU_INST_SH
+#define GFU_INST_SH(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_SH) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
 #define GFU_INST_SW
 #define GFU_INST_SWL
 #define GFU_INST_SWR
@@ -417,8 +424,8 @@ typedef enum gfu_register {
 
 #define GFU_INST_MFHI
 #define GFU_INST_MFLO
-#define GFU_INST_MOVN(Rd, Rs, Rt) (GFU_ENC_OPCODE(GFU_OPCODE_SPECIAL) | GFU_ENC_RD(Rd) | GFU_ENC_RS(Rs) | GFU_ENC_RT(Rt) | GFU_ENC_FUNCT(GFU_FUNCT_MOVN))
-#define GFU_INST_MOVZ(Rd, Rs, Rt) (GFU_ENC_OPCODE(GFU_OPCODE_SPECIAL) | GFU_ENC_RD(Rd) | GFU_ENC_RS(Rs) | GFU_ENC_RT(Rt) | GFU_ENC_FUNCT(GFU_FUNCT_MOVZ))
+#define GFU_INST_MOVN(Rd, Rs, Rt) (GFU_ENC_OPCODE(GFU_OPCODE_SPECIAL) | GFU_ENC_RS(Rs) | GFU_ENC_RT(Rt) | GFU_ENC_RD(Rd) | GFU_ENC_FUNCT(GFU_FUNCT_MOVN))
+#define GFU_INST_MOVZ(Rd, Rs, Rt) (GFU_ENC_OPCODE(GFU_OPCODE_SPECIAL) | GFU_ENC_RS(Rs) | GFU_ENC_RT(Rt) | GFU_ENC_RD(Rd) | GFU_ENC_FUNCT(GFU_FUNCT_MOVZ))
 #define GFU_INST_MTHI
 #define GFU_INST_MTLO
 
@@ -426,8 +433,8 @@ typedef enum gfu_register {
 /// CPU Shift Instructions.                                                 ///
 /// ======================================================================= ///
 
-#define GFU_INST_SLL
-#define GFU_INST_SLLV
+#define GFU_INST_SLL(Rd, Rt, Sa) (GFU_ENC_OPCODE(GFU_OPCODE_SPECIAL) | GFU_ENC_RT(Rt) | GFU_ENC_RD(Rd) | GFU_ENC_SHAMT(Sa) | GFU_ENC_FUNCT(GFU_FUNCT_SLL))
+#define GFU_INST_SLLV(Rd, Rt, Rs) (GFU_ENC_OPCODE(GFU_OPCODE_SPECIAL) | GFU_ENC_RS(Rs) | GFU_ENC_RT(Rt) | GFU_ENC_RD(Rd) | GFU_ENC_FUNCT(GFU_FUNCT_SLLV))
 #define GFU_INST_SRA
 #define GFU_INST_SRAV
 #define GFU_INST_SRL
@@ -469,9 +476,9 @@ typedef enum gfu_register {
 /// Coprocessor Load and Store Instructions.                                ///
 /// ======================================================================= ///
 
-#define GFU_INST_LDC2
-#define GFU_INST_LWC2
-#define GFU_INST_SDC2
+#define GFU_INST_LDC2(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_LDC2) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_LWC2(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_LWC2) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
+#define GFU_INST_SDC2(Rt, Offset, Base) (GFU_ENC_OPCODE(GFU_OPCODE_SDC2) | GFU_ENC_RS(Base) | GFU_ENC_RT(Rt) | GFU_ENC_IMM(Offset))
 #define GFU_INST_SWC2
 
 /// ======================================================================= ///
@@ -502,6 +509,6 @@ typedef enum gfu_register {
 /// ======================================================================= ///
 
 #define GFU_INST_DERET
-#define GFU_INST_SDBBP
+#define GFU_INST_SDBBP(Code) (GFU_ENC_OPCODE(GFU_OPCODE_SPECIAL2) | GFU_ENC_CODE(Code) | GFU_ENC_FUNCT(GFU_FUNCT2_SDBBP))
 
 #endif /* GFUARCH_H_ */
