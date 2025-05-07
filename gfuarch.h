@@ -390,7 +390,7 @@ GFUARCH_INLINE uint32_t gfu_inst_nop();
 
 GFUARCH_INLINE uint32_t gfu_inst_and(gfu_register rd, gfu_register rs, gfu_register rt);
 GFUARCH_INLINE uint32_t gfu_inst_andi(gfu_register rt, gfu_register rs, int32_t imm);
-GFUARCH_INLINE uint32_t gfu_inst_lui(gfu_register rt, int32_t immediate);
+GFUARCH_INLINE uint32_t gfu_inst_lui(gfu_register rt, int32_t imm);
 GFUARCH_INLINE uint32_t gfu_inst_nor(gfu_register rd, gfu_register rs, gfu_register rt);
 GFUARCH_INLINE uint32_t gfu_inst_or(gfu_register rd, gfu_register rs, gfu_register rt);
 GFUARCH_INLINE uint32_t gfu_inst_ori(gfu_register rt, gfu_register rs, int32_t imm);
@@ -562,7 +562,7 @@ GFUARCH_INLINE uint32_t gfu_inst_andi(gfu_register rt, gfu_register rs, int32_t 
            GFU_INST_IMM_ENC(imm);
 }
 
-GFUARCH_INLINE uint32_t gfu_inst_lui(gfu_register rt, int32_t immediate) {
+GFUARCH_INLINE uint32_t gfu_inst_lui(gfu_register rt, int32_t imm) {
     return GFU_INST_OPCODE_ENC(GFU_OPCODE_LUI) |
            GFU_INST_RT_ENC(rt) |
            GFU_INST_IMM_ENC(imm);
