@@ -237,7 +237,7 @@ typedef enum gfu_funct_cop0 {
     GFU_FUNCTC0_MAX = 0x3F,
 } gfu_funct_cop0;
 
-typedef gfu_rs_cop0 {
+typedef enum gfu_rs_cop0 {
     GFU_RSC0_MFC0 = 0x00,
     GFU_RSC0_MTC0 = 0x04,
 
@@ -246,7 +246,7 @@ typedef gfu_rs_cop0 {
     GFU_RSC0_MAX = 0x3F,
 } gfu_rs_cop0;
 
-typedef gfu_rs_cop2 {
+typedef enum gfu_rs_cop2 {
     GFU_RSC2_MFC2 = 0x00,
     GFU_RSC2_CFC2 = 0x02,
     GFU_RSC2_MTC2 = 0x04,
